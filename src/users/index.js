@@ -1,5 +1,6 @@
 import express from "express";
 import createHttpError from "http-errors";
+import CommentsModel from "../comments/model.js";
 import ExperiencesModel from "../experiences/model.js";
 import PostsModel from "../posts/model.js";
 // import multer from "multer";
@@ -28,6 +29,10 @@ usersRouter.get("/", async (req, res, next) => {
         {
           model: ExperiencesModel,
           attributes: ["role", "company", "description", "area", "image"],
+        },
+        {
+          model: CommentsModel,
+          attributes: ["text"],
         },
       ],
     });
