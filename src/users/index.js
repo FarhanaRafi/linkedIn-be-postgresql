@@ -1,5 +1,7 @@
 import express from "express";
 import createHttpError from "http-errors";
+import ExperiencesModel from "../experiences/model.js";
+import PostsModel from "../posts/model.js";
 // import multer from "multer";
 // import { CloudinaryStorage } from "multer-storage-cloudinary";
 // import { v2 as cloudinary } from "cloudinary";
@@ -17,7 +19,18 @@ usersRouter.post("/", async (req, res, next) => {
 });
 usersRouter.get("/", async (req, res, next) => {
   try {
-    const users = await UsersModel.findAll();
+    const users = await UsersModel.findAndCountAll({
+      include: [
+        {
+          model: PostsModel,
+          attributes: ["text", "image"],
+        },
+        {
+          model: ExperiencesModel,
+          attributes: ["role", "company", "description", "area", "image"],
+        },
+      ],
+    });
 
     res.send(users);
   } catch (error) {
